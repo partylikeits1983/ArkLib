@@ -112,6 +112,11 @@ jobs:
           bash scripts/build_timing_report.sh run warm_rebuild "$BUILD_TIMING_RESULTS" -- \
             bash -eo pipefail -c 'lake build'
 
+      - name: Time Lean lint
+        run: |
+          bash scripts/build_timing_report.sh run lean_lint "$BUILD_TIMING_RESULTS" -- \
+            bash -eo pipefail -c 'lake lint -- --no-build ArkLib'
+
       - name: Time validation wrapper
         run: |
           bash scripts/build_timing_report.sh run test_path "$BUILD_TIMING_RESULTS" -- \

@@ -10,6 +10,7 @@ Usage:
 Labels:
   clean_build
   warm_rebuild
+  lean_lint
   test_path
 EOF
 }
@@ -120,12 +121,16 @@ display = {
         "name": "Warm rebuild",
         "command": "`lake build`",
     },
+    "lean_lint": {
+        "name": "Lean lint",
+        "command": "`lake lint -- --no-build ArkLib`",
+    },
     "test_path": {
         "name": test_path_name,
         "command": f"`{test_path_command}`",
     },
 }
-ordered_labels = ["clean_build", "warm_rebuild", "test_path"]
+ordered_labels = ["clean_build", "warm_rebuild", "lean_lint", "test_path"]
 repo_prefixes = ("ArkLib",)
 
 

@@ -42,8 +42,10 @@ git add path/to/newfile.lean
 ./scripts/validate.sh --lint
 ```
 
-This adds `./scripts/lint-style.sh` to the convenience wrapper. The main CI build currently runs
-with lint disabled, so treat this as opt-in for now.
+This adds the baseline-aware declaration linter (`lake lint -- --no-build ArkLib`) and cheap
+tracked Lean file metadata checks. The full text-style sweep remains available as
+`./scripts/lint-style.sh` for cleanup work, but CI uses `./scripts/lint-style-diff.py` to reject
+only style regressions in changed `ArkLib/**/*.lean` files.
 If the task is specifically Lean warning cleanup, follow
 [`../skills/fix-lean-warnings.md`](../skills/fix-lean-warnings.md).
 
@@ -106,8 +108,12 @@ python3 -m pip install leanblueprint
 
 - [`../../.github/workflows/ci.yml`](../../.github/workflows/ci.yml)
   runs the timing-enabled main build on PRs and pushes to `main`, measures a
-  clean build, a warm rebuild, and the `./scripts/validate.sh` path, then
+  clean build, a warm rebuild, `lake lint -- --no-build ArkLib`, and the
+  `./scripts/validate.sh` path, then
   uploads timing artifacts and posts a comparison report on same-repo PRs.
+- [`../../.github/workflows/lint.yml`](../../.github/workflows/lint.yml)
+  runs text and style linting: trailing whitespace, tracked Lean file metadata, and
+  no-new-text-style-errors checks for changed `ArkLib/**/*.lean` files.
 - [`../../.github/workflows/check-imports.yml`](../../.github/workflows/check-imports.yml)
   checks that `ArkLib.lean` matches the tracked source tree.
 - [`../../.github/workflows/docs-integrity.yml`](../../.github/workflows/docs-integrity.yml)

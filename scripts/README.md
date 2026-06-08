@@ -13,6 +13,8 @@ This directory contains various utility scripts for the ArkLib project.
 - **`check-warning-log.py`** - Fail on scoped warning classes found in a captured build log
 - **`check-docs-integrity.py`** - Check docs links and the `CLAUDE.md` symlink
 - **`lint-style.py`** - Python-based style linting
+- **`lint-style-diff.py`** - CI wrapper that rejects new text-style lint errors in changed Lean files
+- **`lint-repo-structure.sh`** - Cheap tracked Lean file metadata checks
 - **`lint-style.lean`** - Lean-based style linting
 
 ### Dependency Analysis
@@ -39,7 +41,7 @@ This directory contains various utility scripts for the ArkLib project.
 
 ### Validation With Optional Checks
 ```bash
-# Add Lean style linting
+# Add baseline-aware Lean linting
 ./scripts/validate.sh --lint
 
 # Build API docs too
@@ -77,6 +79,18 @@ bash scripts/build_timing_report.sh --help
 ### Check Docs Integrity
 ```bash
 python3 ./scripts/check-docs-integrity.py
+```
+
+### Linting
+```bash
+# Baseline-aware declaration lint and cheap tracked-file checks
+./scripts/validate.sh --lint
+
+# Full text-style sweep; useful for cleanup, not yet a whole-repo CI gate
+./scripts/lint-style.sh
+
+# PR-style text lint comparison against a base revision
+python3 ./scripts/lint-style-diff.py --base origin/main --head HEAD
 ```
 
 ### Knowledge Base Indexes
